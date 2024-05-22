@@ -1,6 +1,7 @@
 - CONTROL STATION:
 > Keep in mind openssh-server has to be installed on both control station and target station
 
+Install Ansible using:
 ```
 sudo apt-add-repository ppa:ansible/ansible
 sudo apt update
@@ -15,15 +16,21 @@ ssh-keygen
 
 - TARGET STATION  (Controlled by CONTROL STATION)
 
+Install opennsh-server and chekc if it is active
 ```
 sudo apt update
 sudo apt install openssh-server -y
 sudo systemctl status sshd
 ```
+If not then run:
+```
+sudo systemctl start ssh.service
+```
 --------------------------------------------------------
 
 - ON BOTH STATIONS (and for any other target you want to use/control)
 
+Add a user and add them to the sudoers file
 ```
 sudo adduser ansible ; echo "ansible ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/ansible
 ```
@@ -31,6 +38,7 @@ sudo adduser ansible ; echo "ansible ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sud
 
 - FROM CONTROL STATION
 
+Copy your ssh-key to the target station
 ```
 ssh-copy-id ansible@your.target.ip
 ```
@@ -38,10 +46,10 @@ ssh-copy-id ansible@your.target.ip
 
 - TARGET STATION
 
+This command gets rid of any password verification
 ```
 sudo usermod -L ansible	
 ```
-This command gets rid of any password verification
 
 --------------------------------------------------------
 
