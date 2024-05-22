@@ -1,0 +1,41 @@
+---
+- name: Delete files script for ansible
+  hosts: all
+  become: yes
+  tasks:
+    - name: Navigate to /home/user # Change directory if needed
+      shell: "cd /home"
+      register: navigate_result
+
+    - name: Debug navigate result
+      debug:
+        var: navigate_result
+
+    - name: List all files in /home directory
+      shell: "ls -l /home"
+      register: home_files
+      when: navigate_result.rc == 0  # Check if navigation was successful
+    - name: Debug listing of /home directory
+      debug:
+        var: home_files.stdout_lines
+      when: home_files.rc == 0  # Check if listing files was successful
+
+    - name: Find all files matching *.* in /home directory
+      find:
+        paths: /home
+        patterns: '*.*' # Replace with whatevevr you want
+        recurse: no
+      register: files_to_remove
+      when: navigate_result.rc == 0  # Check if navigation was successful
+
+    - name: Debug found files to remove
+      debug:
+        var: files_to_remove.files
+      when: files_to_remove.matched > 0
+
+    - name: Remove found files
+      file:
+        path: "{{ item.path }}"
+        state: absent
+      loop: "{{ files_to_remove.files }}"
+      when: files_to_remove.matched > 0

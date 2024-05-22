@@ -1,0 +1,2 @@
+[yourgroup]
+target.ip.here ansible_sudo_pass='passphrase' ansible_ssh_user=user

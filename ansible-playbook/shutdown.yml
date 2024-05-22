@@ -1,0 +1,10 @@
+---
+
+- hosts: all
+  become: True
+ 
+  tasks:
+    - name: shutdown
+      command: /sbin/shutdown -h now
+      sudo: yes
+
