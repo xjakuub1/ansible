@@ -7,11 +7,13 @@ sudo apt update
 sudo apt install ansible
 ansible --version //check for ansible version
 ```
-==> ssh-keygen
-
+Then create your ssh key using:
+```
+ssh-keygen
+```
 --------------------------------------------------------
 
-- TARGET STATION > Controlled by CONTROL STATION:
+- TARGET STATION  (Controlled by CONTROL STATION)
 
 ```
 sudo apt update
